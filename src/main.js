@@ -1,9 +1,24 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 Vue.config.productionTip = false
-
+//设置事件总线
+Vue.prototype.$bus = new Vue()
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')
+
+// function Dog(){
+//   this.name = "xiaoyu"
+// }
+// const dog = new Dog()
+// class Person {
+//   constructor(){
+//     this.name="xiaoyu"
+//   }
+// }
+
+

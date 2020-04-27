@@ -16,7 +16,7 @@ export default {
 
     data(){
         return{
-            //isActive:true
+            isActive:false
         }
     },
     // props:['path'],
@@ -27,9 +27,19 @@ export default {
             default:'#ff5777'
         }
     },
-    computed:{
-        isActive(){
-            return this.$route.path.indexOf(this.path) !== -1
+    // computed:{
+    //     isActive(){
+    //         // console.log(this.$route.path);
+    //         // console.log(this.path);
+    //         return this.$route.path.indexOf(this.path) !== -1
+    //     }
+    // },
+    watch:{
+        '$route.path': function (newVal, oldVal) {
+            if(newVal == this.path){
+                // console.log(123);
+                this.isActive = true
+            }else this.isActive = false
         }
     },
     methods:{

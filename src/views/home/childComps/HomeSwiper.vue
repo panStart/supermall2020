@@ -1,9 +1,10 @@
 <template>
     <div>
         <swiper>
-            <swiper-item v-for="(item,index) in swiperList" :key="index">
-                <img src="~assets/img/linshi/fbb.jpg" alt="" >
-               <!-- <img :src="'../../../assets/img/linshi/'+item.src_img" alt="" > -->
+            <swiper-item v-for="(item,index) in banners" :key="index">
+                <a :href="item.link">
+                    <img :src="item.image" alt="轮播图" @load="imageLoad" >
+                </a>
             </swiper-item>
         </swiper>
     </div>
@@ -13,21 +14,30 @@
 import {Swiper,SwiperItem} from 'components/common/swiper'
 export default {
     name:'',
+    data(){
+        return{
+            isLoad:true
+        }
+    },
     components:{
         Swiper,
         SwiperItem
     },
     props:{
-        swiperList:{
+        banners:{
             type:Array,
-            default(){
-                return []
-            }
+            default:[]
         }
     },
-    created(){
-        console.log(this.swiperList[0].img_src);
-        
+    methods:{
+        imageLoad(){
+            //防抖处理
+            if(this.isLoad){
+                 this.$emit("swiperImageLoad")
+                 this.isLoad = false
+            }
+           
+        }
     }
 }
 </script>
