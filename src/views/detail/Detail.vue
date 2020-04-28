@@ -16,6 +16,7 @@
       </scroll>
       <back-top @click.native="backTop" v-show="isShowBackTop"></back-top>
       <detail-bottom-bar @addToCart = "addToCart"></detail-bottom-bar>
+      <!-- <toast/> -->
   </div>
 </template>
 
@@ -35,12 +36,17 @@ import DetailBottomBar from './childComps/DetailBottomBar'
 import CommonMask from "components/content/Mask/commonMask"
 //滑动组件
 import Scroll from 'components/common/scroll/Scroll'
+//toast组件
+// import Toast from 'components/common/toast/Toast'
 
 import { getDetail,Goods,Shop,GoodsParam,getRecommend}  from  "network/detail"
 //获取防抖
 // import { debounce } from 'common/utils'
 //混入
 import { itemImgListerMixin , backTopMixin } from 'common/mixin'
+//映射actions
+import { mapActions } from 'vuex'
+
 export default {
     name:"Detail",
     data(){
@@ -74,7 +80,8 @@ export default {
         // BackTop,//混入
 
         Scroll,
-        CommonMask
+        CommonMask,
+        // Toast
     },
     created(){
        //1.获取路由id
@@ -85,6 +92,8 @@ export default {
        this._getRecommend()
     },
     methods:{
+        //映射action.js的方法
+        ...mapActions(['addCart']),
         _getDetailData(){
             const id = this.$route.params.id
             getDetail(id).then(res=>{
@@ -181,13 +190,22 @@ export default {
             product.image = this.swiperList[0]
             product.title = this.goods.title
             product.desc = this.goods.desc
-            product.price = this.goods.newPrice
+            product.price = this.goods.nowPrice
             product.iid = this.iid
             // console.log(product);
             // this.$store.commit("addCart",product)
             //复杂的逻辑使用actions,mutations尽量简单
-            this.$store.dispatch("addCart",product)
-            
+            // this.$store.dispatch("addCart",product).then(res => {
+            //     console.log(res);
+                
+            // })
+            //映射后使用
+            this.addCart(product).then(res => {
+                // console.log(res);
+                // this.$toast.show(res)
+                this.$toast.show(res);
+                
+            })
         }
     },
     mounted(){
